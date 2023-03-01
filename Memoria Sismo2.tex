@@ -7,9 +7,18 @@
 \usepackage{geometry}%
 \geometry{left=2.5cm,top=1.5cm}%
 \usepackage[dvipsnames]{xcolor}%
-\usepackage{tcolorbox}%
 \usepackage{caption}%
+\usepackage{float}%
 \usepackage{array}%
+\usepackage{colortbl}%
+\usepackage{graphicx}%
+\usepackage{slashbox}%
+\usepackage{amsmath}%
+\usepackage{xcolor}%
+\usepackage{multirow}%
+\usepackage{tcolorbox}%
+\usepackage{booktabs}%
+\usepackage{ragged2e}%
 %
 %
 %
@@ -17,6 +26,361 @@
 \normalsize%
 \section{Análisis Sísmico}%
 \label{sec:AnlisisSsmico}%
+\subsection{Factor de Zona}%
+\label{subsec:FactordeZona}%
+Las rigideces laterales pueden calcularse como la razon entre la fuerza cortante del entrepiso y el correspondiente desplazamiento relativo en el centro de masas, ambos evaluados para la misma condición de carga. \newline%
+%
+
+
+\begin{table}[ht!]%
+\begin{minipage}{0.55\textwidth}%
+\caption{Factor de zona}%
+\begin{tabular}{|>{\centering\arraybackslash}m{3.75cm}|>{\centering\arraybackslash}m{3.75cm}|}%
+\hline%
+\multicolumn{2}{|c|}{\textbf{FACTOR DE ZONA SEGÚN E{-}030}}\\%
+\hline%
+\textbf{ZONA}&\textbf{Z}\\%
+\hline%
+Zona&Z\\%
+\hline%
+\end{tabular}%
+\end{minipage}%
+\begin{minipage}{0.35\textwidth}%
+\begin{center}%
+\includegraphics[width=4cm]{mapa_zona}%
+\end{center}%
+\end{minipage}%
+\caption*{Fuente: E-30 (2018)}%
+\end{table}
+
+%
+Las rigideces laterales pueden calcularse como la razon entre la fuerza cortante del entrepiso y el correspondiente desplazamiento relativo en el centro de masas, ambos evaluados para la misma condición de carga. \newline%
+%
+\subsection{Factor de suelo}%
+\label{subsec:Factordesuelo}%
+Las rigideces laterales pueden calcularse como la razon entre la fuerza cortante del entrepiso y el correspondiente desplazamiento relativo en el centro de masas, ambos evaluados para la misma condición de carga. \newline%
+%
+
+
+\begin{table}[ht!]%
+\centering%
+\caption{Factor de zona}%
+\begin{tabular}{|>{\centering\arraybackslash}m{3.75cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|}%
+\hline%
+\multicolumn{5}{|c|}{\textbf{FACTOR DE SUELO SEGÚN E{-}030}}\\%
+\hline%
+\backslashbox{\textit{\textbf{ZONA}}}{\textit{\textbf{SUELO}}}&\textbf{S0}&\textbf{S1}&\textbf{S2}&\textbf{S3}\\%
+\hline%
+4&0.80&1.00\cellcolor[rgb]{ .949,  .949,  .949} &1.05&1.10\\%
+\hline%
+3&0.80&1.00\cellcolor[rgb]{ .949,  .949,  .949} &1.15&1.20\\%
+\hline%
+2\cellcolor[rgb]{ .949,  .949,  .949} &0.80\cellcolor[rgb]{ .949,  .949,  .949} &\textcolor[rgb]{ 1,  0,  0}{\textbf{1.00}}\cellcolor[rgb]{ .949,  .949,  .949} \cellcolor[rgb]{ .949,  .949,  .949} &1.20\cellcolor[rgb]{ .949,  .949,  .949} &1.40\cellcolor[rgb]{ .949,  .949,  .949} \\%
+\hline%
+1&0.80&1.00\cellcolor[rgb]{ .949,  .949,  .949} &1.60&2.00\\%
+\hline%
+\end{tabular}%
+\caption*{Fuente: E-30 (2018)}%
+\end{table}
+
+%
+\subsubsection{Periodos de suelo}%
+\label{ssubsec:Periodosdesuelo}%
+%
+
+
+\begin{table}[ht!]%
+\centering%
+\caption{Periodos de suelo}%
+\begin{tabular}{|>{\centering\arraybackslash} m{2cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|}%
+\cline{2-5}%
+\multicolumn{1}{r|}{}&\multicolumn{4}{c|}{\textbf{PERIODO "Tp" y "Tl" SEGÚN E-030}}\\%
+\cline{2-5}%
+\multicolumn{1}{r|}{}&\multicolumn{4}{c|}{\textit{\textbf{Perfil de suelo}}}\\%
+\cline{2-5}%
+\multicolumn{1}{r|}{}&\textbf{S0}&\textbf{S1}&\textbf{S2}&\textbf{S3}\\%
+\hline%
+Tp&0.30&\textcolor[rgb]{ 1,  0,  0}{\textbf{0.40}}\cellcolor[rgb]{ .949,  .949,  .949} &0.60&1.00\\%
+\hline%
+Tl&3.00&\textcolor[rgb]{ 1,  0,  0}{\textbf{2.50}}\cellcolor[rgb]{ .949,  .949,  .949} &2.00&1.60\\%
+\hline%
+\end{tabular}%
+\caption*{Fuente: E-30 (2018)}%
+\end{table}
+
+%
+Las rigideces laterales pueden calcularse como la razon entre la fuerza cortante del entrepiso y el correspondiente desplazamiento relativo en el centro de masas, ambos evaluados para la misma condición de carga. \newline%
+%
+\subsection{Sistema Estructural}%
+\label{subsec:SistemaEstructural}%
+Después de realizar el análisis sísmico se determino que los sistemas estructurales en X, Y son:%
+Las rigideces laterales pueden calcularse como la razon entre la fuerza cortante del entrepiso y el correspondiente desplazamiento relativo en el centro de masas, ambos evaluados para la misma condición de carga. \newline%
+%
+
+
+\begin{table}[ht!]%
+\caption{coeficiente básico de reducción}%
+\begin{tabular}{|>{\arraybackslash}m{10cm}| >{\centering\arraybackslash}m{4cm}|}%
+\hline%
+\multicolumn{2}{|c|}{\textbf{SISTEMAS ESTRUCTURALES}}\\%
+\hline%
+\textbf{Sistema Estructural}&\multicolumn{1}{m{4cm}|}{\textbf{Coeficiente Básico de Reducción Ro}}\\%
+\hline%
+\multicolumn{2}{|l|}{\textbf{Acero:}}\\%
+\hline%
+Porticos Especiales Resistentes a Momento (SMF)&8\\%
+\hline%
+Porticos Intermedios Resistentes a Momento (IMF)&5\\%
+\hline%
+Porticos Ordinarios Resistentes a Momento (OMF)&4\\%
+\hline%
+Porticos Ordinarios Resistentes a Momento (OMF)&7\\%
+\hline%
+Porticos Ordinarios Concentricamente Arrriostrados (OCBF)&4\\%
+\hline%
+Porticos Excentricamente Arriostrados (EBF)&8\\%
+\hline%
+\multicolumn{2}{|l|}{\textbf{Concreto Armado:}}\\%
+\hline%
+Porticos&8\\%
+\hline%
+Dual&7\\%
+\hline%
+De muros estructurales&6\\%
+\hline%
+Muros de ductilidad limitada&4\\%
+\hline%
+\textbf{Albañilería Armada o Confinada}&3\\%
+\hline%
+\textbf{Madera}&7\\%
+\hline%
+\end{tabular}%
+\caption*{Fuente: E-30 (2018)}%
+\end{table}
+
+%
+\subsection{Factor de Amplificación sísmica}%
+\label{subsec:FactordeAmplificacinssmica}%
+Las rigideces laterales pueden calcularse como la razon entre la fuerza cortante del entrepiso y el correspondiente desplazamiento relativo en el centro de masas, ambos evaluados para la misma condición de carga. \newline%
+%
+Se determina según el artículo 11 de la E{-}30%
+\setlength{\jot}{0.5cm}%
+
+
+\begin{figure}[h!]%
+\caption{Factor de amplificación}%
+\begin{minipage}{0.5\textwidth}%
+
+    \begin{align*}
+        &T< T_{P}         &   C&=2,5\cdot\left ( \frac{T_{P}}{T} \right )\\
+        &T_{P}< T< T_{L}  &   C&=2,5\cdot\left ( \frac{T_{P}}{T} \right )\\
+        &T> T_{L}         &   C&=2,5\cdot\left ( \frac{T_{P}\;T_{L}}{T^{2}} \right )
+    \end{align*}%
+\end{minipage}%
+\begin{minipage}{0.4\textwidth}%
+\centering%
+\includegraphics[width=6.5cm]{Amplificacion}%
+\end{minipage}%
+\caption*{Fuente: Muñoz (2020)}%
+\end{figure}
+
+%
+\subsubsection{Factor de Importancia}%
+\label{ssubsec:FactordeImportancia}%
+%
+
+
+\begin{table}[h!]%
+\centering%
+\caption{Factor de Uso o Importancia}%
+\begin{tabular}{|>{\arraybackslash}m{3cm}|m{8cm}|>{\arraybackslash}m{2.8cm}|}%
+\hline%
+\multicolumn{3}{|c|}{\textbf{CATEGORIA DE LA EDIFICACION}}\\%
+\hline%
+\multicolumn{1}{|c|}{\textbf{CATEGORIA}}&\multicolumn{1}{|c|}{\textbf{DESCRIPCION}}&\multicolumn{1}{|c|}{\textbf{FACTOR U}}\\%
+\hline%
+\multirow{2}[4]{3cm}{A Edificaciones Escenciales}&A1: Establecimiento del sector salud (públicos y privados) del segundo y tercer nivel, según lo normado por el ministerio de salud.&\multicolumn{1}{>{\centering\arraybackslash}m{2.8cm}|}{Con aislamiento 1.0 y sin aislamiento 1.5.}\\%
+\cline{2-3}%
+&A2: Edificaciones escenciales para el manejo de las emergencias, el funcionamiento del gobierno y en general aquellas que puedan servir de refugio después de un desastre.\cellcolor[rgb]{1,  .949,  .8}&\multicolumn{1}{>{\centering\arraybackslash}m{2.8cm}|}{\textcolor[rgb]{ 1,  0,  0}{\textbf{1.50}}\cellcolor[rgb]{1,  .949,  .8}}\\%
+\hline%
+B Edificaciones Importantes &Edificaciones donde se reúnen gran cantidad de personas tales como cines, teatros, estadios, coliseos, centros comerciales, terminales de buses de pasajeros, establecimientos penitenciarios, o que guardan patrimonios valiosos como museos y bibliotecas.&\multicolumn{1}{>{\centering\arraybackslash}m{2.8cm}|}{1.30}\\%
+\hline%
+C Edificaciones Comunes&Edificaciones comunes tales como: viviendas, oficinas, hoteles, restaurantes, depósitos e instalaciones industriales cuya falla no acarree peligros adicionales de incendios o fugas de contaminantes.&\multicolumn{1}{>{\centering\arraybackslash}m{2.8cm}|}{1.00}\\%
+\hline%
+D Edificaciones temporales&Construcciones provisionales para depósitos, casetas y otras similares.&\multicolumn{1}{>{\centering\arraybackslash}m{2.8cm}|}{A criterio del proyectista}\\%
+\hline%
+\end{tabular}%
+\caption*{Fuente: E-30 (2018)}%
+\end{table}
+
+%
+\subsubsection{Análisis modal Art. 26.1 E{-}030}%
+\label{ssubsec:AnlisismodalArt.26.1E{-}030}%
+\begin{tcolorbox}[colback=gray!5!white,colframe=Maroon!75!black,fonttitle=\bfseries,title=Art. 26.1.1]%
+\textit{En cada dirección se consideran aquellos modos de vibración cuya suma de masas efectivas sea por lo menos el 90\% de la masa total, pero se toma en cuenta por lo menos los tres primeros modos predominantes en la dirección de análisis.}%
+\end{tcolorbox}%
+\begin{tcolorbox}[colback=gray!5!white,colframe=Maroon!75!black,fonttitle=\bfseries,title=Art. 26.1.2]%
+\textit{En cada dirección se consideran aquellos modos de vibración cuya suma de masas efectivas sea por lo menos el 90\% de la masa total, pero se toma en cuenta por lo menos los tres primeros modos predominantes en la dirección de análisis.}%
+\end{tcolorbox}%
+Las rigideces laterales pueden calcularse como la razon entre la fuerza cortante del entrepiso y el correspondiente desplazamiento relativo en el centro de masas, ambos evaluados para la misma condición de carga. \newline%
+%
+
+
+\begin{table}[h!]%
+\extrarowheight = -0.3ex%
+\renewcommand{\arraystretch}{1.3}%
+\centering%
+\caption{Periodos y porcentajes de masa participativa}%
+\begin{tabular}{cccccccc}
+\toprule
+Mode & Period & UX & UY & RZ & SumUX & SumUY & SumRZ \\
+\midrule
+1 & 0.360 & 0.864 & 0.000 & 0.000 & 0.864 & 0.000 & 0.000 \\
+2 & 0.273 & 0.000 & 0.872 & 0.000 & 0.864 & 0.872 & 0.000 \\
+3 & 0.225 & 0.000 & 0.000 & 0.850 & 0.864 & 0.872 & 0.850 \\
+4 & 0.101 & 0.119 & 0.000 & 0.000 & 0.983 & 0.872 & 0.850 \\
+5 & 0.077 & 0.000 & 0.112 & 0.000 & 0.983 & 0.984 & 0.850 \\
+6 & 0.062 & 0.000 & 0.000 & 0.132 & 0.983 & 0.984 & 0.982 \\
+7 & 0.048 & 0.017 & 0.000 & 0.000 & 1.000 & 0.984 & 0.982 \\
+8 & 0.037 & 0.000 & 0.016 & 0.000 & 1.000 & 1.000 & 0.982 \\
+9 & 0.029 & 0.000 & 0.000 & 0.018 & 1.000 & 1.000 & 1.000 \\
+\bottomrule
+\end{tabular}
+%
+\end{table}
+
+%
+\subsubsection{Irregularidad de Rigidez{-}Piso Blando}%
+\label{ssubsec:IrregularidaddeRigidez{-}PisoBlando}%
+\begin{tcolorbox}[colback=gray!5!white,colframe=cyan!75!black,fonttitle=\bfseries,title=Tabla N°9 E-030]%
+Existe irregularidad de rigidez cuando, en cualquiera de las direcciondes de análisis, en un entrepiso la rigidez lateral es menor que 70\% de la rigidez lateral del entrepiso inmediato superior, o es menor que 80\% de la rigidez lateral promedio de los tres niveles superiores adyacentes. 
+ Las rigideces laterales pueden calcularse como la razón entre la fuerza cortante del entrepiso y el correspondiente desplazamiento relatibo en el centro de masas, ambos evaluados para la misma condición de carga %
+\end{tcolorbox}%
+\begin{tcolorbox}[colback=gray!5!white,colframe=cyan!75!black,fonttitle=\bfseries,title=Tabla N°9 E-030]%
+
+Existe irregularidad extrema de rigidez cuando, en cualquiera de las direcciones de análisis, en un entrepiso la rigidez lateral es menor que 60\% de la rigidez lateral del entrepiso inmediato superior, o es menor que 70\% de la rigidez lateral promedio de los tres niveles superiores adyacentes.
+Las rigideces laterales pueden calcularse como la razon entre la fuerza cortante del entrepiso y el correspondiente desplazamiento relativo en el centro de masas, ambos evaluados para la misma condición de carga.%
+\end{tcolorbox}%
+Las rigideces laterales pueden calcularse como la razon entre la fuerza cortante del entrepiso y el correspondiente desplazamiento relativo en el centro de masas, ambos evaluados para la misma condición de carga. \newline%
+%
+
+
+\begin{table}[h!]%
+\centering%
+\caption{Irregularidad de rigidez}%
+\begin{tabular}{cccccccc}
+\toprule
+Story & OutputCase & VX & VY & Rigidez Lateral(k) & 70\%k previo & 80\%Prom(k) & is\_reg \\
+\midrule
+Story3 & SDx Max & 37.537 & 9.565 & 18791.749 &  &  & Regular \\
+Story2 & SDx Max & 74.277 & 19.164 & 28433.680 & 13154.224 &  & Regular \\
+Story1 & SDx Max & 95.209 & 24.671 & 35703.618 & 19903.576 &  & Regular \\
+\bottomrule
+\end{tabular}
+%
+\end{table}
+
+%
+
+
+\begin{table}[h!]%
+\centering%
+\caption{Irregularidad de rigidez}%
+\begin{tabular}{cccccccc}
+\toprule
+Story & OutputCase & VX & VY & Rigidez Lateral(k) & 70\%k previo & 80\%Prom(k) & is\_reg \\
+\midrule
+Story3 & SDy Max & 11.261 & 31.883 & 18765.862 &  &  & Regular \\
+Story2 & SDy Max & 22.283 & 63.881 & 28442.075 & 13136.104 &  & Regular \\
+Story1 & SDy Max & 28.563 & 82.237 & 35708.771 & 19909.452 &  & Regular \\
+\bottomrule
+\end{tabular}
+%
+\end{table}
+
+%
+\subsection{Irregularidad de Masa o Peso}%
+\label{subsec:IrregularidaddeMasaoPeso}%
+\begin{tcolorbox}[colback=gray!5!white,colframe=cyan!75!black,fonttitle=\bfseries,title=Tabla N°9 E-030]%
+Se tiene irregularidad de masa (o peso) cuando el peso de un piso determinado según el artículo 26, es nayor que 1,5 veces el peso de un piso adyascente. Este criterio no se aplica en azoteas ni en sótanos%
+\end{tcolorbox}%
+Las rigideces laterales pueden calcularse como la razon entre la fuerza cortante del entrepiso y el correspondiente desplazamiento relativo en el centro de masas, ambos evaluados para la misma condición de carga. \newline%
+%
+
+
+\begin{table}[h!]%
+\centering%
+\caption{Irregularidad de Masa o Peso}%
+\begin{tabular}{ccccc}
+\toprule
+Story & Masa & 1.5 Masa & Tipo de Piso & is\_reg \\
+\midrule
+Story3 & 9.191 &  & Azotea & Regular \\
+Story2 & 13.850 & 20.774 & Piso & Regular \\
+Story1 & 14.612 & 21.918 & Piso & Regular \\
+Base & 2.723 &  & Sotano & Regular \\
+\bottomrule
+\end{tabular}
+%
+\end{table}
+
+%
+\newpage%
+\subsubsection{Irregularidad Torsional}%
+\label{ssubsec:IrregularidadTorsional}%
+\begin{tcolorbox}[colback=gray!5!white,colframe=cyan!75!black,fonttitle=\bfseries,title=Tabla N°9 E-030]%
+Existe irregularidad torsional cuando, en cualquiera de las direcciones de análisis el desplazamiento relativo de entrepiso en un edificion ($\Delta_{max}$) en esa dirección, calculado incluyendo excentricidad accidental, es mayor que 1,3 veces el desplazamineto relativo promedio de los extremos del mismo entrepiso para la condicion de carga ($\Delta_{prom}$). 
+ Este crriterio sólo se aplica en edificios con diafragmas rígidos y sólo si el máximo desplazamiento relativo de entrepiso es mayor que 50\% del desplazamiento permisible indicado en la Tabla N° 11%
+\end{tcolorbox}%
+\begin{tcolorbox}[colback=gray!5!white,colframe=cyan!75!black,fonttitle=\bfseries,title=Tabla N°9 E-030]%
+Existe irregularidad torsional cuando, en cualquiera de las direcciones de análisis el desplazamiento relativo de entrepiso en un edificion ($\Delta_{max}$) en esa dirección, calculado incluyendo excentricidad accidental, es mayor que 1,3 veces el desplazamineto relativo promedio de los extremos del mismo entrepiso para la condicion de carga ($\Delta_{prom}$). 
+ Este crriterio sólo se aplica en edificios con diafragmas rígidos y sólo si el máximo desplazamiento relativo de entrepiso es mayor que 50\% del desplazamiento permisible indicado en la Tabla N° 11%
+\end{tcolorbox}%
+%
+
+
+\begin{table}[ht!]%
+\centering%
+\caption{Irregularidad Torsional}%
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{cccccccccc}
+\toprule
+Story & OutputCase & Direction & Max Drift & Avg Drift & Ratio & Height & Drifts & < Driftmax/2 & Es Regular \\
+\midrule
+Story3 & SDx Max & X & 0.004028 & 0.003867 & 1.042 & 3.6 & 0.006713 & False & Regular \\
+Story3 & SDx Max & Y & 0.000643 & 0.000622 & 1.034 & 3.6 & 0.001072 & True & Regular \\
+Story2 & SDx Max & X & 0.004952 & 0.004773 & 1.037 & 3.6 & 0.008253 & False & Regular \\
+Story2 & SDx Max & Y & 0.000826 & 0.000802 & 1.03 & 3.6 & 0.001377 & True & Regular \\
+Story1 & SDx Max & X & 0.004885 & 0.004718 & 1.036 & 5 & 0.005862 & False & Regular \\
+Story1 & SDx Max & Y & 0.00083 & 0.000808 & 1.028 & 5 & 0.000996 & True & Regular \\
+\bottomrule
+\end{tabular}
+}%
+\end{table}
+
+%
+
+
+\begin{table}[ht!]%
+\centering%
+\caption{Irregularidad Torsional}%
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{cccccccccc}
+\toprule
+Story & OutputCase & Direction & Max Drift & Avg Drift & Ratio & Height & Drifts & < Driftmax/2 & Es Regular \\
+\midrule
+Story3 & SDy Max & X & 0.001227 & 0.00117 & 1.049 & 3.6 & 0.002045 & True & Regular \\
+Story3 & SDy Max & Y & 0.00176 & 0.001751 & 1.005 & 3.6 & 0.002933 & True & Regular \\
+Story2 & SDy Max & X & 0.001508 & 0.001443 & 1.045 & 3.6 & 0.002513 & True & Regular \\
+Story2 & SDy Max & Y & 0.002307 & 0.002297 & 1.004 & 3.6 & 0.003845 & False & Regular \\
+Story1 & SDy Max & X & 0.001486 & 0.001426 & 1.042 & 5 & 0.001783 & True & Regular \\
+Story1 & SDy Max & Y & 0.002355 & 0.002346 & 1.004 & 5 & 0.002826 & True & Regular \\
+\bottomrule
+\end{tabular}
+}%
+\end{table}
+
+%
 \subsubsection{Irregularidad por Esquinas Entrantes}%
 \label{ssubsec:IrregularidadporEsquinasEntrantes}%
 \begin{tcolorbox}[colback=gray!5!white,colframe=cyan!75!black,fonttitle=\bfseries,title=Tabla N°9 E-030]%
@@ -34,7 +398,7 @@
 %
 
 
-\begin{table}[ht!]%
+\begin{table}[H]%
 \centering%
 \caption{Irregularidad por discontinuidad del diafragma (a)}%
 \begin{tabular}{|ll|c|r}%
@@ -63,16 +427,28 @@
 %
 
 
-\begin{table}[ht!]%
+\begin{table}[H]%
 \centering%
 \caption{Irregularidad por discontinuidad del diafragma (b)}%
 \begin{tabular}{cccc}%
-\textbackslash{}textbf\{Abertura\}&	extbf\{\{Largo (m)\}&	extbf\{\{Ancho (m)\}&	extbf\{\{Área \$m\^{}2\$\}\\%
+\hline%
+\textbf{Abertura}&\textbf{Largo (m)}&\textbf{Ancho (m)}&\textbf{Área $m^2$}\\%
+\hline%
 1&4.02&2.30&9.25\\%
+\hline%
 2&1.10&2.30&2.53\\%
+\hline%
 3&1.20&19.00&22.80\\%
+\hline%
+&\multicolumn{2}{r}{Área total de aberturas:}&34.58 $m^2$\\%
+&\multicolumn{2}{r}{Área total de la planta:}&120.41 $m^2$\\%
+&\multicolumn{2}{r}{Ratio:}&28.72 \%\\%
+&\multicolumn{2}{r}{Ratio límite:}&50.00 \%\\%
+&\multicolumn{2}{r}{Verificación:}&\textcolor[rgb]{ .267,  .447,  .769} {Regular}\\%
 \end{tabular}%
 \end{table}
 
+%
+Las rigideces laterales pueden calcularse como la razon entre la fuerza cortante del entrepiso y el correspondiente desplazamiento relativo en el centro de masas, ambos evaluados para la misma condición de carga. \newline%
 %
 \end{document}

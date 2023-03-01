@@ -3,7 +3,7 @@ import os
 sys.path.append(os.getcwd())
 
 
-import latex_utils as ltx
+from mem import latex_utils as ltx
 from pylatex import Document, Section, Subsection,Subsubsection, Tabular, NoEscape, MiniPage, Center, MultiColumn, Table, Figure, Tabularx
 from pylatex.utils import NoEscape, bold
 from pylatex.package import Package
@@ -318,13 +318,13 @@ Las rigideces laterales pueden calcularse como la razon entre la fuerza cortante
 
 def irreg_masa(obj,masa,insert='',o_type=Subsubsection):
     def latex_table(table):
-        table.columns = ['Story','Masa','1.5 Masa Piso Inferior','1.5 Masa Piso Superior','Tipo de Piso','is\_reg']
+        table.columns = ['Story','Masa','1.5 Masa','Tipo de Piso','is\_reg']
         table = table.replace('',0.0)
-        for i in  ['Masa','1.5 Masa Piso Inferior','1.5 Masa Piso Superior']:
+        for i in  ['Masa','1.5 Masa']:
             table.loc[:,i] = table.loc[:,i].astype(float)
         table = table.style.hide(axis='index')
-        table = table.format('{:.3f}',subset=pd.IndexSlice[:,['Masa','1.5 Masa Piso Inferior','1.5 Masa Piso Superior']])
-        table = table.to_latex(hrules=True, column_format = 'c'*6).replace('0.000','')
+        table = table.format('{:.3f}',subset=pd.IndexSlice[:,['Masa','1.5 Masa']])
+        table = table.to_latex(hrules=True, column_format = 'c'*5).replace('0.000','')
         return table
     
     
@@ -473,8 +473,8 @@ if __name__ == '__main__':
     from lib import etabs_utils as etb
     from lib import sismo_utils as sis
     import comtypes.client
-    # from lib import sismo_utils as sis
-
+    
+   
     _, _SapModel = etb.connect_to_etabs()
     #Definir variables de salida 'Ton_m_C' o 'kgf_cm_C'
     etb.set_units(_SapModel,'Ton_m_C')

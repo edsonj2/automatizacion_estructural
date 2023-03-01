@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.getcwd()+'\..')
 import pandas as pd
 from lib import etabs_utils as etb
 import sys
@@ -151,71 +154,42 @@ def create_rev_torsion_table(SapModel,loads,max_drift,R,is_regular=True):
     return table
 
 #Piso Blando
-
-def obtener_despl_rel(data):
-    data = data.reset_index(drop=True)
-    data = data.apply(lambda x:float(x))
-    despl = data.diff().apply(lambda x:-x)
-    despl = despl.drop(0,axis=0)
-    despl[len(despl)+1] = data[len(data)-1]
-    despl = despl.reset_index(drop=True)
-    return despl
-
-def get_k_prom(data):
-    k_prom = []
-    s1 = 0
-    s2 = 0
-    s3 = 0
-    for i,j in enumerate(data):
-        s1 += j
-        if i >= 1:
-            s2 += j
-        if i >= 2:
-            s3 += j
-        if i<2:
-            k_prom.append(0)
-        else:
-            k_prom.append(s1/3)
-            s1=s2
-            s2=s3
-            s3=0
-    k_prom.pop()
-    k_prom.insert(0,0)
-    return k_prom
-
-def down_1(data):
-    data = data.drop(len(data)-1,axis=0)
-    data = pd.concat([pd.DataFrame([0]),data],ignore_index=True)
-    return data
-      
+     
 def rev_piso_blando(SapModel,loads):
     SapModel.DatabaseTables.SetLoadCasesSelectedForDisplay(loads)
     _,data = etb.get_table(SapModel,'Diaphragm Center Of Mass Displacements')
-    data['OutputCase'] = data.OutputCase+ ' ' +data.StepType
+    data['OutputCase'] = data.OutputCase+ ' ' +data.StepType.fillna('')
+    data['OutputCase'] = data['OutputCase'].apply(lambda x:x.rstrip())
     data = data[['Story','OutputCase','UX','UY']]
     table = pd.DataFrame()
 
     _,data_forces = etb.get_table(SapModel,'Story Forces')
-    data_forces['OutputCase'] = data_forces.OutputCase+ ' ' +data_forces.StepType
+    data_forces['OutputCase'] = data_forces.OutputCase+ ' ' +data_forces.StepType.fillna('')
+    data_forces['OutputCase'] = data_forces['OutputCase'].apply(lambda x:x.rstrip())
     data_forces = data_forces[ data_forces.Location=='Top']
     data_forces = data_forces[['Story','OutputCase','VX','VY']]
 
     for load in set(data_forces.OutputCase):
         load_data = data[data.OutputCase == load]
         load_data = load_data.reset_index(drop=True)
-        URX = obtener_despl_rel(load_data.UX)
-        URY = obtener_despl_rel(load_data.UY)
-        load_data['URX'] = URX
-        load_data['URY'] = URY
+        UX_0 = load_data.UX.astype(float) #desplazamiento del piso
+        UX_1 = UX_0.shift(-1).fillna(0) #desplazamiento del piso inferior
+        UY_0 = load_data.UY.astype(float) #desplazamiento del piso
+        UY_1 = UY_0.shift(-1).fillna(0) #desplazamiento del piso inferior
+        load_data['ΔUX'] = UX_0 - UX_1 #desplazamiento relativo X
+        load_data['ΔUY'] = UY_0 - UY_1 #desplazamieto relativo Y
         load_data = load_data.merge(data_forces)
+        lat_rig_1 = abs(load_data.VX.apply(lambda x:float(x))/load_data.ΔUX.apply(lambda x:float(x))) #rigidez calculada en X
+        lat_rig_2 = abs(load_data.VY.apply(lambda x:float(x))/load_data.ΔUY.apply(lambda x:float(x))) #rigidez calculada en Y
+        load_data['lat_rig(k)'] = lat_rig_1 if lat_rig_1.mean() > lat_rig_2.mean() else lat_rig_2 #La rigidez en el sentido correcto será la mayor
 
-        lat_rig_1 = abs(load_data.VX.apply(lambda x:float(x))/load_data.URX.apply(lambda x:float(x)))
-        lat_rig_2 = abs(load_data.VY.apply(lambda x:float(x))/load_data.URY.apply(lambda x:float(x)))
-        lat_rig = lat_rig_1 + lat_rig_2
-        load_data['lat_rig(k)'] = lat_rig
-
-        load_data['0.7_prev_k'] = down_1(load_data['lat_rig(k)'] *0.7)
-        load_data['0.8k_prom'] = list(map(lambda x: 0.8*x ,get_k_prom(load_data['lat_rig(k)'])))
+        load_data['0.7_prev_k'] = load_data['lat_rig(k)'].shift(1).fillna(0)*0.7 #70% de la rigidez del piso superior
+        
+        k_3 = load_data['lat_rig(k)'].shift(3).fillna(0) #rigidez del tercer piso superior
+        k_2 = load_data['lat_rig(k)'].shift(-1).shift(3).fillna(0) #rigidez del segundo piso superior
+        k_1 = load_data['lat_rig(k)'].shift(-2).shift(3).fillna(0) #rigidez del piso superior
+        
+        load_data['0.8k_prom'] = 0.8*(k_1+k_2+k_3)/3 #80% del promedio de tres pisos superiores
 
         table = pd.concat([table,load_data],ignore_index=True)
 
@@ -227,92 +201,40 @@ def rev_piso_blando(SapModel,loads):
 
 # Masa
 
-def rev_masa(SapModel,n_sotanos,n_techos):
+def rev_masa(SapModel,n_sotanos,n_azoteas):
     _,masa = etb.get_table(SapModel,'Mass Summary by Story')
     masa['Mass'] = masa.UX
     masa = masa[['Story','Mass']]
     
     stories = masa.Story
-    sotano = list(stories[-1-n_sotanos:])
-    azotea = list(stories[0:n_techos+1])
-
-    sup_mass = []
-    aux = 0
-    for i,j in enumerate(masa['Mass']):
-        if i == 0:
-            sup_mass.append('')
-            aux = float(j)*1.5
+    sotanos = list(stories[-1-n_sotanos:])
+    azoteas = list(stories[0:n_azoteas+1])
+         
+    def set_story(story):
+        if story in sotanos:
+            return 'Sotano'
+        elif story in azoteas:
+            return 'Azotea'
         else:
-            sup_mass.append(aux)
-            aux = 0
-        aux = float(j)*1.5
-
-    inf_mass = []
-    aux = 0
-    for i,j in enumerate(masa['Mass']):
-        aux = float(j)*1.5
-        if i == 0:
-            pass
+            return 'Piso'
+    
+    masa['story_type'] = masa.Story.apply(set_story)
+    masa.Mass = masa.Mass.astype(float)
+    masa['1.5 Mass'] = masa.apply(lambda x: 1.5 * x['Mass'] if x['story_type'] == 'Piso' else None,axis=1)
+    masa['inf_mass'] = masa['1.5 Mass'].shift(-1).fillna(float('inf'))
+    masa['sup_mass'] = masa['1.5 Mass'].shift(1).fillna(float('inf'))
+    
+    def is_reg(row):
+        if row['story_type'] in ['Sotano','Azotea']:
+            return 'Regular'
+        elif (row['Mass'] < row['inf_mass']) and (row['Mass'] < row['sup_mass']):
+            return 'Regular'
         else:
-            inf_mass.append(aux)
-            aux = 0
-    inf_mass.append('')
-
-    masa['1.5_inf_mass'] = inf_mass
-    masa['1.5_sup_mass'] = sup_mass
-
-    mask = []
-    j = False
-    for i in masa.Story:
-        if i in sotano:
-            aux = mask.pop()
-            if aux == 2:
-                mask.append(1)
-            else:
-                mask.append(0)
-            mask.append(0)
-            continue
-        if i in azotea:
-            mask.append(4)
-            j = True
-            continue
-        if j:
-            j =False
-            mask.append(3)
-            continue
-        mask.append(2)
-
-    story_type = []
-    for  i in masa.Story:
-        if  i in azotea:
-            story_type.append('Azotea')
-        elif i in sotano:
-            story_type.append('Sotano')
-        else:
-            story_type.append('Piso')
-
-    masa['story_type'] = story_type
-
-    reg = []
-    for i,j in enumerate(mask):
-        if j == 4:
-            masa['1.5_inf_mass'][i] = ''
-            reg.append(True)
-        elif j == 3:
-            masa['1.5_sup_mass'][i] = ''
-            reg.append(float(masa.Mass[i]) < masa['1.5_inf_mass'][i])
-        elif j==2:
-            reg.append( (float(masa.Mass[i]) < masa['1.5_inf_mass'][i] ) & (float(masa.Mass[i]) < masa['1.5_sup_mass'][i]))
-        elif j == 1:
-            masa['1.5_inf_mass'][i] = ''
-            reg.append(float(masa.Mass[i]) < masa['1.5_sup_mass'][i])
-        else:
-            masa['1.5_sup_mass'][i] = ''
-            masa['1.5_inf_mass'][i] = ''
-            reg.append(True)
-
-    masa['is_reg'] = ['Regular' if i else 'Irregular' for i in reg]
-
+            return 'Irregular'
+    
+    masa['is_regular'] = masa.apply(is_reg, axis = 1)
+    
+    masa = masa[['Story','Mass','1.5 Mass','story_type','is_regular']].fillna('')
     return masa
 
 # Derivas
@@ -338,6 +260,7 @@ def min_shear(SapModel,is_regular=True,loads={'X':('Sx','SDx'),'Y':('Sy','SDy')}
     _,base_shear=etb.get_table(SapModel,'Story Forces')
     base_shear = base_shear[base_shear['Story']==story]
     base_shear = base_shear[base_shear['Location']=='Bottom']
+    base_shear['StepType'] = base_shear['StepType'].fillna('Max')
     base_shear = base_shear[base_shear['StepType']=='Max']
     base_shear = base_shear[['OutputCase','VX','VY']]
     Sx = float(base_shear[base_shear['OutputCase'].apply(lambda x:x.upper()) =='SX']['VX'])
@@ -620,10 +543,10 @@ Factor de Reducción:
 
 
 if __name__ == '__main__':
-    from mem import sismo_mem as smem
 
 
-    _SapModel, _EtabsObject = etb.connect_to_etabs()
+
+    _,_SapModel= etb.connect_to_etabs()
 
     #Definir variables de salida 'Ton_m_C' o 'kgf_cm_C'
     etb.set_units(_SapModel,'Ton_m_C')
@@ -663,32 +586,10 @@ if __name__ == '__main__':
     sismo = sismo_e30(data=datos)
     sismo.show_params()
     sismo.analisis_sismo(_SapModel)
-
-    zona = 2
-    suelo = 'S1'
-    categoria = 'A2'
-
-
-
-    # geometry_options = { "left": "2.5cm", "top": "1.5cm" }
-    # doc = smem.Document(geometry_options=geometry_options)
-    # doc.packages.append(smem.Package('xcolor', options=['dvipsnames']))
-    # s1 = smem.Section('Análisis Sísmico')
-    # s1.packages.append(smem.Package('tcolorbox'))
-    # s1.packages.append(smem.Package('booktabs'))
-    # # s1 = smem.params_sitio(zona,suelo,categoria,s1)
-    # # s1 = smem.ana_modal(sismo.modal, s1)
-    # tabla = sismo.piso_blando_table
-    # sis_x = tabla[tabla['OutputCase']=='SDX Max']
-    # sis_y = tabla[tabla['OutputCase']=='SDY Max']
-    # s1 = smem.irreg_rigidez(s1,sis_x,sis_y)
-
-    # doc.append(s1)
-    # doc.generate_pdf('Memoria Sismo2')
-    # doc.generate_tex('Memoria Sismo2')
+    
     
 
-    
+
     
     
     
