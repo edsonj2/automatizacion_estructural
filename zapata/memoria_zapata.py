@@ -5,9 +5,7 @@ from pylatex.package import Package
 from tkinter.filedialog import askopenfilename
 import shutil
 
-def copy_image(url):
-    archivo_seleccionado = askopenfilename()
-    shutil.copy(archivo_seleccionado, 'out/' + url)
+from memoria import ecuaciones, datos
 
 geometry_options = { "left": "2.5cm", "top": "1.5cm" }
 doc = Document(geometry_options=geometry_options)
@@ -23,12 +21,22 @@ doc.packages.append(Package('xcolor'))
 doc.packages.append(Package('booktabs'))
 doc.packages.append(Package('amsmath'))
 
-from memoria import ecuaciones, introduccion
 doc.append(NoEscape(ecuaciones))
-doc.append(NoEscape(introduccion))
-from memoria import presiones, req_min
-doc.append(NoEscape(presiones))
-doc.append(NoEscape(req_min))
+
+def copy_image(url):
+    archivo_seleccionado = askopenfilename()
+    shutil.copy(archivo_seleccionado, 'out/' + url)
+
+def set_variables(var_dict):
+    text = ''
+    for name,data in var_dict.items():
+        value = data[0]
+        unit = data[1]
+        text+=f"\\FPset\\{name}{{{value.to(unit).magnitude:.2f}}}\n"
+    return text
+
+def tex_py(texto):
+    return texto.replace('{', '{{').replace('}', '}}').replace('[','[{').replace(']','}]')
 
 #Uso de variables
 import pint
@@ -41,18 +49,13 @@ tonf = ureg('tonf')
 
 sec = Section('Diseño de la Cimentación')
 subsec = Subsection('Diseño de Zapata Aislada')
+subsubsec = Subsubsection('Datos para el diseño de una zapata aislada con carga y momentos')
 
-#Dimensiones de la columna:
-b_col = 60*cm
-h_col = 90*cm
+subsec.append(NoEscape(datos))
 
-def set_variables(var_dict):
-    text = ''
-    for name,data in var_dict.items():
-        value = data[0]
-        unit = data[1]
-        text+=f"\\FPset\\{name}{{{value.to(unit).magnitude:.2f}}}\n"
-    return text
+#Datos de la columna:
+b_col=0.3*m
+h_col=0.7*m
 
 #Capacidad Portante del terreno
 σt = 1.2*kgf/cm**2
@@ -76,24 +79,24 @@ variables = {
     'sigmas':(σsn,'kgf/cm**2')
 }
 var = set_variables(variables)
-
-# sec.append(subsec)
-# doc.append(sec)
-# doc.append(NoEscape(var))
-# doc.append(NoEscape(c_portante))
-# doc.append(factor_suelo(1,'S0'))
-# doc.generate_pdf('out/mem_zapata')
-# doc.generate_tex('out/mem_zapata')
+var1 = set_variables(h_col)
+var2 = set_variables(b_col)
 
 from memoria import cap_portante_2
 c_portante = cap_portante_2(σt,γc,hz,γm,hs,hp,SCpiso,σsn)
 
+texto = r'''
+\begin{align*}
+	L &= \LongitudZapL[7.77][0.80][0.40] = 3.10\\
+	B &= \LongitudZapB[7.77][0.80][0.40] = 2.70\\
+	A &= \Area[3.10][2.70] = 
+\end{align*}
+'''
+
 
 sec.append(subsec)
 doc.append(sec)
-#doc.append(NoEscape(var))
 doc.append(NoEscape(c_portante))
-# doc.append(factor_suelo(1,'S0'))
 
 doc.generate_pdf('out/mem_zapata')
 doc.generate_tex('out/mem_zapata')

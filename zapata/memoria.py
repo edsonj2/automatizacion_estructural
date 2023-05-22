@@ -219,6 +219,7 @@ Después de realizar el diseño en concreto armado con los requisitos mínimos d
 '''
 )
 
+
 datos = (
 r'''\subsubsection{Datos para el diseño de una zapata aislada con carga y momentos}
 
@@ -226,7 +227,7 @@ r'''\subsubsection{Datos para el diseño de una zapata aislada con carga y momen
     \centering
 
     \begin{tabular}{lcl} %\toprule
-        Dimensiones de la columna               &:& $C_1        = \hcol$m \quad $C_2 = \bcol$m\\
+        Dimensiones de la columna               &:& $C_1        = %$m \quad $C_2 = 11$m\\
         Profundidad de cimentación              &:& $D_f        = 1.70 $m\\
         Altura de piso terminado                &:& $h_p        = 0.10$m\\
         Resistencia a compresión del concreto   &:& $f'_c       = 210$ kg/cm$^2$ \\
@@ -239,38 +240,8 @@ r'''\subsubsection{Datos para el diseño de una zapata aislada con carga y momen
     \end{tabular}
 \end{table}
 
-\textbf{Cargas:}
+\textbf{Cargas:}.replace(h_col)
 
-
-\begin{table}[h!]
-    \centering
-    \begin{tabular}{cccc} \toprule
-         & Carga en la dirección Z & Momento en la dirección X & Momento en la dirección Y  \\ 
-         & $F_z$ & $M_x $ & $M_y$ \\ \midrule
-        $P_m$ & 130& 10 & 2 \\
-        $P_v$ & 70 & 6 & 1 \\
-        $S_x$ & 10 & 15 & 0 \\
-        $S_y$ & 9 & 0 & 13 \\
-        $V_x$ & 180 & 16 & 11 \\
-        $V_y$ & 180 & 16 & 11 \\
-        $P_p$ & 180 & 16 & 11 \\\bottomrule
-    \end{tabular}
-    \caption{Cargas y momentos para el diseño}
-    \label{tab:my_label}
-\end{table}
-
-\begin{table}[h!]
-    \centering
-    \begin{tabular}{lll}
-        $P_m$ &=&   Carga muerta\\
-        $P_v$ &=&   Carga viva\\
-        $S_x$ &=&   Carga sísmica debido al sismo en la dirección x\\
-        $S_y$ &=&   Carga sísmica debido al sismo en la dirección y\\
-        $V_x$ &=&   Carga por viento en la dirección x\\
-        $V_y$ &=&   Carga por viento en la dirección y\\
-        $P_p$ &=&   Peso propio\\
-    \end{tabular}
-\end{table}
 '''
 )
 
