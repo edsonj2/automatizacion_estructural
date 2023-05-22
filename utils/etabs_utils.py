@@ -511,7 +511,7 @@ def create_found_seism_3(SapModel,g=9.806,
     modal['Mode']=modal.Mode.astype(int)
     found_factors = modal[['OutputCase','Case','Direction','Mode','FoundFactor','Period']].sort_values(by=['OutputCase','Mode']).reset_index(drop=True)
 
-    return (found_factors,shear_table,modal)
+    return (found_factors)
 
 def export_factors(SapModelSafe,found_factors):
     '''
@@ -556,4 +556,3 @@ if __name__ == '__main__':
                                                     'y' : 'C para espectro'})
     export_factors(SapModelSafe,found_factors)
     print(time.time()-tiempo_inicial)
-    print(shear_table)
