@@ -1,0 +1,237 @@
+\documentclass[12pt,addpoints]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[table, dvipsnames]{xcolor}
+%\usepackage[usenames]{color}
+\usepackage{stmaryrd}
+%\usepackage{array}
+\usepackage{xfp}
+\usepackage{fp}
+\usepackage{pgf}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{mathtools}
+\usepackage[natbibapa]{apacite}
+\bibliographystyle{apacite}
+\graphicspath{ {images/} }
+\usepackage{vmargin}
+\usepackage{amsmath}
+\usepackage{circuitikz}
+\usepackage{tikz}
+\usepackage{tocloft}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.10}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{patterns}
+
+
+\usepackage{units}
+\usepackage{setspace}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amsmath,yhmath}
+\usepackage{geometry}
+%\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{lipsum}
+\usepackage{tcolorbox}
+\usepackage{tocloft}
+\usepackage{fancyhdr}
+\usepackage{float}
+%\usepackage[colorlinks,citecolor=red]{hyperref}
+%\usepackage{}
+%\newtcolorbox{mybox2}{colback=red!5!white,colframe=red!75!black,width=0.85\textwidth}
+\newtcolorbox{mybox2}[1]{colback=gray!5!white,colframe=cyan!75!black,fonttitle=\bfseries,title=#1}
+
+\newtcolorbox{mybox3}[1]{colback=gray!5!white,colframe=Maroon!75!black,fonttitle=\bfseries,title=#1}
+
+\newtcolorbox{mybox4}[1]{colback=gray!5!white,colframe=LimeGreen!75!black,fonttitle=\bfseries,title=#1}
+
+
+\newcommand{\listequationsname}{\Large Lista de ecuaciones}
+\newlistof{myequations}{equ}{\listequationsname}
+\newcommand{\myequations}[1]{%
+\addcontentsline{equ}{myequations}{Ecuación\hspace{0.3em}\protect\numberline{\theequation}#1}\par}
+\setlength{\cftmyequationsnumwidth}{1.75em}
+\setlength{\cftmyequationsindent}{1.5em}
+\addtocontents{equ}{~\hfill\textbf{Página}\par}
+
+
+\definecolor{mycolor}{rgb}{0.122, 0.435, 0.698}
+%\captionsetup[table]{name=Tabla}
+%\usepackage{bigstrut}
+\setpapersize{A4}
+\setmargins{2.5cm}       % margen izquierdo
+{1.5cm}                        % margen superior
+{16.5cm}                      % anchura del texto
+{23.42cm}                    % altura del texto
+{10pt}                           % altura de los encabezados
+{1cm}                           % espacio entre el texto y los encabezados
+{0pt}                             % altura del pie de página
+{2cm}                           % espacio entre el texto y el pie de página
+\usepackage{diagbox}
+\usepackage{slashbox}
+\usepackage{url}
+\usepackage[framemethod=TikZ]{mdframed}
+%Theorem
+\newcounter{theo}[section] \setcounter{theo}{0}
+\renewcommand{\thetheo}{\arabic{section}.\arabic{theo}}
+\newenvironment{theo}[2][]{%
+\refstepcounter{theo}%
+\ifstrempty{#1}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=blue!20]
+{\strut Theorem~\thetheo};}}
+}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=blue!20]
+{\strut  ~#1};}}%%%%%%%%%Theorem~\thetheo:
+}%
+\mdfsetup{innertopmargin=10pt,linecolor=blue!20,%
+linewidth=2pt,topline=true,%
+frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+}
+\begin{mdframed}[]\relax%
+\label{#2}}{\end{mdframed}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newtheorem{defi}{Inciso}[subsection]
+\renewcommand{\listfigurename}{Lista de Figuras}
+\renewcommand{\listtablename}{Lista de Tablas}
+\renewcommand{\baselinestretch}{1.5}
+\renewcommand{\abstractname}{Resumen}
+\renewcommand{\figurename}{Figura}
+\renewcommand{\contentsname}{\underline{Contenido}}
+\renewcommand{\tablename}{Tabla}
+\renewcommand{\cftfigfont}{Figura }
+\renewcommand{\cfttabfont}{Tabla }
+\addtocontents{toc}{~\hfill\textbf{Página}\par}
+\addtocontents{lot}{~\hfill\textbf{Página}\par}
+\addtocontents{lof}{~\hfill\textbf{Página}\par}
+\providecommand{\keywords}[1]
+{
+  \textbf{\text{Palabras clave: }} #1
+}
+
+\title{\textbf{MEMORIA DE CALCULO ESTRUCTURAL}}
+\author{VIVIENDA MULTIFAMILIAR}
+\date{Junio 06, 2022}
+\usepackage[hidelinks]{hyperref}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\includegraphics[trim={0 5cm 0 2.2cm},clip,width=27mm]{PORTADA (4).png}}
+\lhead{MEMORIA DE CALCULO}
+%\rfoot{Página\ \thepage\ de \numpages}
+\lfoot{Realizado por: \textit{Alexis Pompilla Yábar}}
+\cfoot{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\rfoot{Página\ \thepage}
+%\AtBeginDocument{\addtocontents{toc}{\protect\thispagestyle{empty}}} 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%                        Nuevos comandos         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\parindent}{0pt} % sin sangría
+%\renewcommand{\multirowsetup}{\centering}
+%\newlength{\LL}\settowidth{\LL}{texto}
+
+%% -------------------------------------------------------------------------------------------------------- %%
+%%                                          ECUACIONES                                                      %%
+%% -------------------------------------------------------------------------------------------------------- %%
+
+\usepackage{xargs}
+
+
+\newcommandx{\mycommandEC}[4][1=a, 2=b, 3=c, 4=]{%
+	% Cuerpo del comando
+	% Aquí puedes utilizar los argumentos #1, #2 y #3
+	%\begin{align#4}
+		x_{1, 2} &= \dfrac{- #2 \pm \sqrt{#2^2 - 4 \cdot #1 \cdot #3} }{2 \cdot #1} 		%\tag{A}
+	%\end{align#4}
+}
+
+% Longitud de desarrollo %Varibles db, fy, f'c
+\newcommandx{\Ldi}[3][1=d_b, 2=f_y, 3=f'_c]{0.08 \cdot #1 \cdot \dfrac{#2}{\sqrt{#3}}}
+\newcommandx{\Ldii}[2][1=d_b, 2=f_y]{0.004 \cdot #1 \cdot #2}
+
+% d = max(ld1, ld2)
+\newcommandx{\ddd}[2][1=L_{d1}, 2=L_{d2}]{\max(#1, #2)}
+
+% hz = d + 0.1m
+\newcommandx{\hz}[1][1=d]{d + 0.1m}
+
+% Capacidad portante neta del terreno
+% Variables: σn = σt - γc·hz - γm·hs - γc·hp - S/C_piso
+\newcommandx{\qn}[7][1=\sigma_t, 2=\gamma_c, 3=h_z, 4=\gamma_m, 5=h_s, 6=h_p, 7=S/C_{piso}]{#1 - #2 \cdot #3 - #4\cdot#5 - #2\cdot#6 - #7}
+
+% Área tentativa % Variables: Pservicio, σn
+\newcommandx{\AreaTentativa}[2][1=P_{servicio}, 2=\sigma_n]{\dfrac{#1}{#2}}
+ 
+% Dimensiones de la zapata L y B
+% Variables: At, c1, c2
+\newcommandx{\LongitudZapL}[3][1=A_t, 2=c_1, 3=c_2]{\sqrt{#1} + \dfrac{#2 - #3}{2}} %Para L
+\newcommandx{\LongitudZapB}[3][1=A_t, 2=c_1, 3=c_2]{\sqrt{#1} - \dfrac{#2 - #3}{2}} %Para B
+\newcommandx{\Area}[2][1=L, 2=B]{#1 \cdot #2}
+
+% Verificación de zapatas con cargas y momentos biaxiales
+% variables: Pultima, Area(A), Mx, Vx, Iyy + My, Vy, Ixx
+\newcommandx{\EcPresiones}[8][1=P_{ultima}, 2=A, 3=M_x, 4=V_x, 5=I_{yy}, 6=M_y, 7=V_y, 8=I_{xx}]{\sigma_{1,2,3,4} = \dfrac{#1}{#2} \pm \dfrac{#3\cdot#4}{#5} \pm \dfrac{#6\cdot#7}{#8}}
+
+% Verificación de corte por punzonamiento
+% Sección crítica bo, variables: c1, c2, d
+\newcommandx{\SeccCriticaP}[3][1=c_1, 2=c_2, 3=d]{2(#1 + #3) + 2(#2 + #3)}
+% Area tributaria, variables: c1, c2, d
+\newcommandx{\AreaTributariaP}[3][1=c_1, 2=c_2, 3=d]{(#1 + #3)\cdot(#2 + #3)}
+
+% Cortante de diseño por corte-punzonamiento
+% Variables: σu, A, Ao
+\newcommandx{\VuPunzonamiento}[3][1=\sigma_u, 2=A, 3=A_o]{#1 \cdot (#2 - #3)}
+
+% Verificación cortante por punzonamiento (las 3 verificaciones)
+% Variables: σ=0.85, f'c, bo, d, αs, β
+\newcommandx{\VcPunzonamientoi}[4][1=f'_c, 2=b_o, 3=d, 4=\beta]{0.85 \cdot (0.17 \left( 1 + \dfrac{2}{#4} \right) \sqrt{#1}\cdot #2 \cdot #3)}
+
+\newcommandx{\VcPunzonamientoii}[5][1=f'_c, 2=b_o, 3=d, 4=\beta, 5=\alpha_s]{0.85 \cdot ( 0.083 \left( \dfrac{#5 \cdot #3}{#2} + 2\right) \sqrt{#1}\cdot #2 \cdot #3)}
+
+\newcommandx{\VcPunzonamientoiii}[3][1=f'_c, 2=b_o, 3=d]{0.85 \cdot (0.33 \cdot \sqrt{#1} \cdot #2 \cdot #3)}
+
+
+% Cortante de diseño por flexion
+% Variables: σu, B, c, d
+\newcommandx{\VuFlexion}[4][1=\sigma_u, 2=B, 3=c, 4=d]{#1 \cdot #2 \cdot (#3 - #4)}
+
+% Verificación cortante por corte-flexion
+% Variables: σ=0.85, f'c, B, d
+\newcommandx{\VcFlexion}[3][1=f'_c, 2=B, 3=d]{0.85 \cdot 0.17 \cdot \sqrt{#1} \cdot #2 \cdot #3}
+
+% Cálculo de acero por flexión
+% Variables: σu, Lv=, B=prof de la zapata
+\newcommandx{\MomUltimoi}[3][1=\sigma_u, 2=L_v, 3=B]{\dfrac{#1 \cdot (#2)^2 \cdot #3}{2}}
+
+% Variables: Mu, φ, B, d, f'c, %%w
+\newcommandx{\MomUltimoii}[5][1=M_u, 2=\phi, 3=B, 4=d, 5=f'c]{#1 = #2 (#3)(#4^2)(#5)(w)(1 - 0.59 \cdot w)}
+
+% Cálculo del área de acero
+% Variables: w, b, d, f'c, fy
+\newcommandx{\AreaAcero}[5][1=w, 2=b, 3=d, 4=f'_c, 5=f_y]{\dfrac{#1 \cdot #2 \cdot #3 \cdot #4}{#5}}
+
+% Área de acero mínimo
+% Variables: b, h
+\newcommandx{\AreaAceroMin}[2][1=b, 2=h]{0.0018 \cdot #1 \cdot #2}

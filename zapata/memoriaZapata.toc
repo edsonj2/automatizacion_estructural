@@ -1,0 +1,19 @@
+\nobreakspace {}\hfill \textbf {Página}\par 
+\contentsline {subsection}{\numberline {0.1}Diseño de la cimentación}{4}{subsection.0.1}%
+\contentsline {subsubsection}{\numberline {0.1.1}Modelamiento}{4}{subsubsection.0.1.1}%
+\contentsline {subsubsection}{\numberline {0.1.2}Tipología de la cimentación}{5}{subsubsection.0.1.2}%
+\contentsline {subsubsection}{\numberline {0.1.3}Exportación de cargas de ETABS a SAFE}{5}{subsubsection.0.1.3}%
+\contentsline {subsubsection}{\numberline {0.1.4}Predimensionamiento}{5}{subsubsection.0.1.4}%
+\contentsline {subsubsection}{\numberline {0.1.5}Control de presiones}{6}{subsubsection.0.1.5}%
+\contentsline {subsubsection}{\numberline {0.1.6}Diseño en concreto armado}{9}{subsubsection.0.1.6}%
+\contentsline {section}{\numberline {1}Diseño de la Cimentación}{10}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Diseño de Zapata Aislada}{10}{subsection.1.1}%
+\contentsline {subsubsection}{\numberline {1.1.1}Datos para el diseño de una zapata aislada con carga y momentos}{10}{subsubsection.1.1.1}%
+\contentsline {subsubsection}{\numberline {1.1.2}Dimensionamiento en altura}{10}{subsubsection.1.1.2}%
+\contentsline {subsubsection}{\numberline {1.1.3}Capacidad portante neta del terreno}{11}{subsubsection.1.1.3}%
+\contentsline {subsubsection}{\numberline {1.1.4}Dimensionamiento en planta}{12}{subsubsection.1.1.4}%
+\contentsline {subsubsection}{\numberline {1.1.5}Verificación de zapatas con cargas y momentos biaxiales}{12}{subsubsection.1.1.5}%
+\contentsline {subsubsection}{\numberline {1.1.6}Diseño de la zapata}{13}{subsubsection.1.1.6}%
+\contentsline {subsubsection}{\numberline {1.1.7}Verificación de corte por punzonamiento}{13}{subsubsection.1.1.7}%
+\contentsline {subsubsection}{\numberline {1.1.8}Verificación de corte por flexión}{14}{subsubsection.1.1.8}%
+\contentsline {subsubsection}{\numberline {1.1.9}Cálculo de acero por flexión}{15}{subsubsection.1.1.9}%
