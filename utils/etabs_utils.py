@@ -527,11 +527,32 @@ def export_factors(SapModelSafe,found_factors):
             SapModelSafe.LoadCases.StaticLinear.SetCase('found '+load+' Mode'+str(row.Mode))
             SapModelSafe.LoadCases.StaticLinear.SetLoads('found '+load+' Mode'+str(row.Mode),1,['Load'],[row.Case+'_MODE'+str(row.Mode)],[row.FoundFactor])
 
-
-
-
+def extract_strip_data(SapModelSafe,seism_loads):
+    _,table = get_table(SapModelSafe,'Strip Forces')
+    table = table[['StripObject','Station','Location','OutputCase','V2','M3']]
+    table = table[table['OutputCase'].str.startswith('found ')]
+    table['Load'] = table['OutputCase'].apply(lambda load: load[:load.find(' Mode')])
+    df_periods = pd.DataFrame()
+    for load in seism_loads:
+        periods = SapModelSafe.LoadCases.StaticLinear.GetLoads('Periods '+load)[-2]
+        loads = ['found '+load+' Mode' + str(i+1) for i,_ in enumerate(periods)]
+        df_periods = pd.concat([df_periods,pd.DataFrame(loads,periods).reset_index().rename(columns={'index':'Periods',0:'OutputCase'})],axis=0)
+    table = table.merge(df_periods, on='OutputCase')
+    V2_cqc = (table.groupby(['Station','Location','StripObject','Load'])
+              .apply(lambda row: comb_CQC(row['V2'].astype(float), row['Periods']))
+              .reset_index().rename(columns={0:'V2'}))
+    M3_cqc = (table.groupby(['Station','Location','StripObject','Load'])
+              .apply(lambda row: comb_CQC(row['M3'].astype(float), row['Periods']))
+              .reset_index().rename(columns={0:'M3'}))
+    data = V2_cqc.merge(M3_cqc, on = ['Station','Location','StripObject','Load'])
+    data['Station'] = data['Station'].astype(float)
+    data = data.sort_values(by=['Location'],ascending=False).reset_index(drop=True)
+    data = data.sort_values(by=['StripObject','Load','Station']).reset_index(drop=True)
+    return data[['StripObject','Load','Station','Location','V2','M3']]
+    
+    
 if __name__ == '__main__':
-    _,SapModel = connect_to_etabs()
+    #_,SapModel = connect_to_etabs()
     _,SapModelSafe = connect_to_safe()
     #SapModel.SetModelIsLocked(False)
     #print(set_envelopes_for_dysplay(SapModel))
@@ -542,17 +563,21 @@ if __name__ == '__main__':
     
     import time
 
+    seism_loads= ['SismoX','Sismo+X','Sismo-X','SismoY','Sismo+Y','Sismo-Y']
+
+
     tiempo_inicial = time.time()
-    found_factors,shear_table,modal = create_found_seism_3(SapModel,
-                                        g=1,
-                                         seism_modal_cases =   
-                                         {  'SismoX':('Modal','x'),
-                                            'Sismo+X':('Modal+X','x'),
-                                            'Sismo-X':('Modal-X','x'),
-                                            'SismoY':('Modal','y'),
-                                            'Sismo+Y':('Modal+Y','y'),
-                                            'Sismo-Y':('Modal-Y','y')},
-                                        spectres = {'x' : 'C para espectro',
-                                                    'y' : 'C para espectro'})
-    export_factors(SapModelSafe,found_factors)
+    # found_factors,shear_table,modal = create_found_seism_3(SapModel,
+    #                                     g=1,
+    #                                      seism_modal_cases =   
+    #                                      {  'SismoX':('Modal','x'),
+    #                                         'Sismo+X':('Modal+X','x'),
+    #                                         'Sismo-X':('Modal-X','x'),
+    #                                         'SismoY':('Modal','y'),
+    #                                         'Sismo+Y':('Modal+Y','y'),
+    #                                         'Sismo-Y':('Modal-Y','y')},
+    #                                     spectres = {'x' : 'C para espectro',
+    #                                                 'y' : 'C para espectro'})
+    # export_factors(SapModelSafe,found_factors)
+    print(extract_strip_data(SapModelSafe,seism_loads))
     print(time.time()-tiempo_inicial)
