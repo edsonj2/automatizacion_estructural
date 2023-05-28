@@ -44,20 +44,18 @@ r'''
 %\usepackage[usenames]{color}
 \usepackage{stmaryrd}
 %\usepackage{array}
-\usepackage{xfp}
-\usepackage{fp}
+%\usepackage{xfp}
+%\usepackage{fp}
 \usepackage{pgf}
 \usepackage{graphicx}
-\usepackage{subfigure}
+
 \usepackage{mathtools}
 \usepackage[natbibapa]{apacite}
 \bibliographystyle{apacite}
 \graphicspath{ {images/} }
 \usepackage{vmargin}
-\usepackage{amsmath}
 \usepackage{circuitikz}
 \usepackage{tikz}
-\usepackage{tocloft}
 \usetikzlibrary{calc}
 \usetikzlibrary{arrows}
 
@@ -89,8 +87,9 @@ r'''
 \usepackage{tocloft}
 \usepackage{fancyhdr}
 \usepackage{float}
+%\usepackage{subfigure}
 %\usepackage[colorlinks,citecolor=red]{hyperref}
-%\usepackage{}
+
 %\newtcolorbox{mybox2}{colback=red!5!white,colframe=red!75!black,width=0.85\textwidth}
 \newtcolorbox{mybox2}[1]{colback=gray!5!white,colframe=cyan!75!black,fonttitle=\bfseries,title=#1}
 
@@ -159,12 +158,87 @@ r'''
 \rfoot{Página\ \thepage}
 %\AtBeginDocument{\addtocontents{toc}{\protect\thispagestyle{empty}}} 
 
+%% ------------------------------------ Entorno Teorema ...........................................%%
+\usepackage{xparse,xcolor}
+%\definecolor{colordominanteD}{RGB}{10, 96, 206} % Color
+\definecolor{colordominanteD}{RGB}{5, 100, 222} % Color
+\usepackage{tikz,tkz-tab} %
+\usetikzlibrary{matrix,arrows, positioning,shadows,shadings,backgrounds,
+	calc, shapes, tikzmark}
+\usepackage{tcolorbox, empheq} %
+\tcbuselibrary{skins,breakable,listings,theorems}
+
+
+\definecolor{colordominanteD}{RGB}{74,0,148} % Color
+\newcounter{tcbteorema}[section] % Contador 1.1, 1.2,... en rojo
+\renewcommand{\thetcbteorema}{{\color{red}\thesection.\arabic{tcbteorema}}}
+
+% Estilo "nodoTeorema" para nodos
+\tikzset{nodoTeorema/.style={ %
+		rectangle, top color=gray!15, bottom color=gray!5,
+		inner sep=1mm,anchor=west,font=\small\bf\sffamily}
+}
+% Caja de entorno
+\newtcolorbox{cajaTeorema}[3][]{ %
+	% Opciones generales
+	arc=0mm,breakable,enhanced,colback=gray!5,boxrule=0pt,top=7mm,
+	drop fuzzy shadow, fontupper=\normalsize,
+	% label
+	step and label={tcbteorema}{#3},
+	overlay unbroken= { %
+		% Barra vertical
+		\draw[colordominanteD,line width=2pt]
+		([xshift=2pt] frame.north west)--([xshift=2pt] frame.south west);
+		% Borde superior grueso.
+		% "--+(0pt,3pt)" significa: 3pt hacia arriba desde la posición anterior
+		\draw[colordominanteD,line width=2.5cm]
+		([xshift=1.28cm, yshift=0cm]frame.north west)--+(0pt,3pt);
+		% Borde superior 1
+		\draw[color=colordominanteD,line width=0.2pt]
+		([xshift=2pt] frame.north west)--([xshift=0pt]frame.north east);
+		% Caja Teorema-contador
+		\node[nodoTeorema](tituloteo)
+		at ([xshift=0.2cm, yshift=-4mm]frame.north west)
+		{\textbf{\color{colordominanteD} #2}};
+	},
+	overlay first = {
+		% Barra vertical
+		\draw[colordominanteD,line width=2pt]
+		([xshift=2pt] frame.north west)--([xshift=2pt] frame.south west);
+		% Borde superior grueso
+		\draw[colordominanteD,line width=2.5cm]
+		([xshift=1.28cm, yshift=0cm]frame.north west)--+(0pt,3pt);
+		% Borde superior 1
+		\draw[color=colordominanteD,line width=0.2pt]
+		([xshift=2pt] frame.north west)--([xshift=0pt]frame.north east);
+		% Caja Teorema-contador
+		\node[nodoTeorema](tituloteo)
+		at ([xshift=0.2cm, yshift=-4mm]frame.north west)
+		{\textbf{\color{colordominanteD} #2}};
+	}, %First
+	% Nada que mantener en los cambios de página
+	overlay middle = { 
+		% Barra vertical
+		\draw[colordominanteD,line width=2pt]
+		([xshift=2pt] frame.north west)--([xshift=2pt] frame.south west);
+	},
+	overlay last = { 
+		% Barra vertical
+		\draw[colordominanteD,line width=2pt]
+		([xshift=2pt] frame.north west)--([xshift=2pt] frame.south west);
+	}
+	#1}
+%- Uso \begin{teorema}... o \begin{teorema}[de tal] o \begin{teorema}[][ref]
+			\NewDocumentEnvironment{theo}{O{} O{} O{}}{
+				\bigskip
+				\begin{cajaTeorema}{#1}{#2} %
+					#3
+				}{\end{cajaTeorema}\bigskip }
+%% ----------------------------------- Fin Entorno Teorema .........................................%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%                        Nuevos comandos         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \setlength{\parindent}{0pt} % sin sangría
-%\renewcommand{\multirowsetup}{\centering}
-%\newlength{\LL}\settowidth{\LL}{texto}
 
 %% -------------------------------------------------------------------------------------------------------- %%
 %%                                          ECUACIONES                                                      %%
@@ -350,10 +424,10 @@ Para las zapatas combinadas se trató de hacer coincidir el centro de gravedad d
 Después de realizar un análisis iterativo se obtiene las áreas de cimentación mostradas en la figura  para no superar la presión admisible tanto para cargas de gravedad y sísmicas. 
 
 \subsubsection{Control de presiones}
-% \begin{theo}[15.2.4 y 15.2.5 de la norma E-060:]{thm:ca1}
-% 15.2.4 Se podrá considerar un incremento del 30\% en el valor de la presión admisible del suelo para los estados de cargas en los que intervengan cargas temporales, tales como sismo o viento.\\
-% 15.2.5 Para determinar los esfuerzos en el suelo o las fuerzas en pilotes, las acciones sísmicas podrán reducirse al 80\% de los valores provenientes del análisis, ya que las solicitaciones sísmicas especificadas en la NTE E.030 Diseño Sismorresistente están especificadas al nivel de resistencia de la estructura.
-% \end{theo}
+\begin{theo}[15.2.4 y 15.2.5 de la norma E-060:][thm:ca1]
+15.2.4 Se podrá considerar un incremento del 30\% en el valor de la presión admisible del suelo para los estados de cargas en los que intervengan cargas temporales, tales como sismo o viento.\\
+15.2.5 Para determinar los esfuerzos en el suelo o las fuerzas en pilotes, las acciones sísmicas podrán reducirse al 80\% de los valores provenientes del análisis, ya que las solicitaciones sísmicas especificadas en la NTE E.030 Diseño Sismorresistente están especificadas al nivel de resistencia de la estructura.
+\end{theo}
 \newpage
 \noindent Por lo tanto las combinaciones para el control de presiones en condiciones de servicio sera:
 \begin{center}
@@ -396,8 +470,8 @@ SY: Carga sísmica en dirección Y\\
 \noindent
 La capacidad portante admisible del terreno a -2.8m donde se cimienta la parte frontal del edifico es de $1.82\mathrm{~kg/cm^2} $.\\
 En la parte posterior a una cota de +0.50m la capacidad portante admisible del terreno es $1.42\mathrm{~kg/cm^2}$.\\
-En todos los casos se cumple con la condición: $q_{u}\leq q_{n}$, siendo el caso mas critico la combinación de cargas gravitacionales dado que las cargas sísmicas se reducen considerablemente debido a lo mencionado en los artículos 15.2.4 y 15.2.5 de la \cite{E-060}.\\
-Las dimensiones finales se muestran en la figura \ref{dim}:
+En todos los casos se cumple con la condición: $q_{u}\leq q_{n}$, siendo el caso mas critico la combinación de cargas gravitacionales dado que las cargas sísmicas se reducen considerablemente debido a lo mencionado en los artículos 15.2.4 y 15.2.5 de la %\cite{E-060}.\\
+Las dimensiones finales se muestran en la figura %\ref{dim}:
 % \begin{figure}[h!]
 %     \centering
 %     \caption{Dimensiones de la cimentación}
@@ -418,63 +492,6 @@ Según el articulo 10.5.4 la cuantía mínima en zapatas sera de 0.0018, y cuand
 
 \subsection{Diseño de Zapata Aislada}
 
-%% ------------------------------------------------------------------------------------
-%%                      DEFINICIÓN DE VARIABLES                                         
-%% ------------------------------------------------------------------------------------
-\FPset\plosa{0.3} %peso de losa por m2
-\FPset\alosa{3.2}
-\FPset\wpt{0.1}
-\FPset\wlosa{0.2}
-\FPset\bv{0.3}
-\FPset\h{0.5}
-
-% CARGAS
-\FPset\Pm{130} % Carga muerta
-\FPset\Pv{70} % Carga viva
-\FPset\Mmx{10} % Momento por carga muerta en x
-\FPset\Mmy{2} % Momento por carga muerta en y
-\FPset\Mvx{6} % Momento por carga viva en x
-\FPset\Mvy{1} % Momento por carga viva en y
-\FPset\Msx{15} % Momento por carga sísmica en la dirección x
-\FPset\Msy{13} % Momento por carga sísmica en la dirección y
-\FPset\Psx{10} % Carga sísmica vertical en la dirección x
-\FPset\Psy{9} % Carga sísmica vertical en la dirección y
-
-\FPset\q{30} % Resistencia del terreno 30 ton/m2
-
-% Dimensiones de la zapata
-\FPset\B{2.60} % B = 2.60m
-\FPset\L{3.00} % L = 3.00m
-
-
-% Cálculos
-\FPeval{\P}{round(\Pm+\Pv,2)} % Pm + Pv
-\FPeval{\At}{round(\P * 1.05 / 27,2)} % Área tentativa
-\FPeval{\A}{round(\B * \L,1)} % Área
-\FPeval{\M}{round(\Mmx+\Mvx,2)} % Mmx + Mvx
-\FPeval{\Sigmax}{round(\P * 1.05/ (\B * \L) + 6*\M / (\B * \L^2),2)} % Sigma en dirección x
-
-% Aumentar las dimensiones de la zapata
-\FPeval{\Ba}{round(\B + 0.1,2)} % B = 2.60m + 0.1m
-\FPeval{\La}{round(\L + 0.1,2)} % B = 3.00m + 0.1m
-
-\FPeval{\Sigmaxa}{round(\P * 1.05/ (\Ba * \La) + 6*\M / (\Ba * \La^2) + 6*(\Mmy + \Mvy)/(\La* \Ba^2),2)} % Sigma en dirección x
-\FPeval{\Px}{round(\Pm+\Pv + \Psx,2)} % Pm + Pv + Psx
-\FPeval{\Sigmaxsa}{round(\Px * 1.05/ (\Ba * \La) + 6*(\M + \Msx) / (\Ba * \La^2) + 6*(\Mmy + \Mvy)/(\La* \Ba^2),2)} % Sigma con sismo en dirección x 
-
-\FPeval{\Py}{round(\Pm+\Pv + \Psy,2)} % Pm + Pv + Psy
-\FPeval{\Sigmaysa}{round(\Py * 1.05/ (\Ba * \La) + 6*(\M ) / (\Ba * \La^2) + 6*(\Mmy + \Mvy + \Msy)/(\La* \Ba^2),2)} % Sigma con sismo en dirección y 
-
-
-%% ------------------------------------------------------------------------------------
-%%                      EVALUACIÓN DE VARIABLES                                         
-%% ------------------------------------------------------------------------------------
-\FPeval{\wviga}{round((\plosa+\wpt)*\alosa+2.4*\bv*\h/10000,2)}
-\FPeval{\wvigav}{round((\wlosa)*\alosa,2)}
-\FPeval{\wvigau}{round(1.25*(\wviga+\wvigav),2)}
-
-%% ------------------------------------------------------------------------------------
-
 \subsubsection{Datos para el diseño de una zapata aislada con carga y momentos}
 
 \begin{table}[h!]
@@ -482,6 +499,7 @@ Según el articulo 10.5.4 la cuantía mínima en zapatas sera de 0.0018, y cuand
     \rowcolors{1}{}{gray!20}
     \begin{tabular}{lcl} %\toprule
         Dimensiones de la columna               &:& $C_1        = var_bcol$ \quad $C_2 = var_hcol$\\
+        Diámetro de la barra de acero de la columna &:& $d_b    = var_dbcol$\\
         Profundidad de cimentación              &:& $D_f        = var_Df$\\
         Resistencia a compresión del concreto   &:& $f'_c       =  var_fc $ \\
         Resistencia a la fluencia del acero     &:& $f_y        =  var_fy$ \\
@@ -489,7 +507,7 @@ Según el articulo 10.5.4 la cuantía mínima en zapatas sera de 0.0018, y cuand
         Peso específico del concreto            &:& $\gamma_c   =  var_gamma_c $ \\
         Altura de piso terminado                &:& $h_p        = var_hp$\\
         Sobrecarga de piso                      &:& $S/C_{piso} = var_SCp$ \\ 
-        Capacidad portante del terreno          &:& $\sigma_t  = var_sigma_s$  \\
+        Capacidad portante del terreno          &:& $\sigma_t   = var_sigma_s$  \\
     \end{tabular}
 \end{table}
 
@@ -530,11 +548,8 @@ Según el articulo 10.5.4 la cuantía mínima en zapatas sera de 0.0018, y cuand
 Longitud de desarrollo
 
 \begin{align}
-	% Longitud de desarrollo
-	% \Ldi[db][fy][f'c]
-	% \Ldi[db][fy]
-	L_{d1} &= \Ldi\\
-	L_{d2} &= \Ldii\\
+	L_{d1} &= \dfrac{0.24 \cdot f_y \cdot d_b}{\sqrt(f'_c)} \\
+	L_{d2} &= (0.043 \cdot f_y)d_b\\
 	d      &= \ddd \\
 	h_z	   &= \hz
 \end{align}
@@ -542,47 +557,47 @@ Longitud de desarrollo
 Para la altura de la zapata $h_z$, tomaremos el mayor valor de $L_{d1}$ y $L_{d2}$ más el recubrimiento.
 
 \begin{align*}
-    L_{d1} &= \Ldi[var_dbcol][var_fy][var_fc] = var_ld1\\
-	L_{d2} &= \Ldii[var_dbcol][var_fy] = var_ld2\\
+    L_{d1} &= \dfrac{0.24 \cdot var_fy \cdot var_dbc_cm}{\sqrt(var_fc)}=var_ld1 \\
+	L_{d2} &= (0.043 \cdot var_fy)var_dbc_cm=var_ld2\\
 	d      &= \ddd[var_ld1][var_ld2] =  var_ldes\\
-	h_z	   &= \hz[var_des] = var_hz   
+	h_z	   &= var_ldes + 10 ~cm = var_hz   
 \end{align*}
 
-\subsubsection{Capacidad portante neta del terreno}
-
-El concepto de capacidad portante neta que es la capacidad del terreno reducida por efecto de la sobrecarga, el peso del suelo y el peso de la zapata. La capacidad portante neta es igual a:
-\begin{align}
-	\sigma_{sn} =&\qn \\
-	\sigma_{sn} =&\qn[2400][0.60][2100][0.30][0.10][500]\\
-	\sigma_{sn} =& valor-python \nonumber
-\end{align}
-
-\textbf{Donde:}
-
-\begin{table}[h!]
-    \centering
-    \begin{tabular}{lll}
-        $\sigma_{sn}$ &=&    Capacidad portante neta.\\
-        $\sigma_t$ &=&   Carga admisible del terreno.\\
-        $\gamma_c$ &=&    Peso específico del concreto\\
-        $h_s$ &=&   Altura del suelo sobre la zapata.\\
-    \end{tabular}
-\end{table}
+%\subsubsection{Capacidad portante neta del terreno}
+%
+%El concepto de capacidad portante neta que es la capacidad del terreno reducida por efecto de la sobrecarga, el peso del suelo y el peso de la zapata. La capacidad portante neta es igual a:
+%\begin{align}
+%	\sigma_{sn} =&\qn \\
+%	\sigma_{sn} =&\qn[2400][0.60][2100][0.30][0.10][500]\\
+%	\sigma_{sn} =& valor-python \nonumber
+%\end{align}
+%
+%\textbf{Donde:}
+%
+%\begin{table}[h!]
+%    \centering
+%    \begin{tabular}{lll}
+%        $\sigma_{sn}$ &=&    Capacidad portante neta.\\
+%        $\sigma_t$ &=&   Carga admisible del terreno.\\
+%        $\gamma_c$ &=&    Peso específico del concreto\\
+%        $h_s$ &=&   Altura del suelo sobre la zapata.\\
+%    \end{tabular}
+%\end{table}
 
 \newpage
 \subsubsection{Dimensionamiento en planta}
 
-% \begin{theo}[Nota:]
-%     PPara el dimensionamiento en planta de una cimentación, considerar un incremento de la carga para tomar en cuenta el \textbf{peso propio de la zapata} (5 a 10\% dependiendo si el terreno es duro o blando)
-%     \begin{align}
-%         PP_{zapata} = 5-10\% (P_m + P_v)
-%     \end{align}
-% \end{theo}
+ \begin{theo}[Nota:]
+     Para el dimensionamiento en planta de una cimentación, considerar un incremento de la carga para tomar en cuenta el \textbf{peso propio de la zapata} (5 a 10\% dependiendo si el terreno es duro o blando)
+     \begin{align}
+         PP_{zapata} = 5-10\% (P_m + P_v)
+     \end{align}
+ \end{theo}
 
 Considerando peso de la zapata, calculamos el área tentativa.
 \begin{align}
-	A_t &= \AreaTentativa\\
-	A_t &= 7.77 \, m^2\nonumber
+	A_t &= \AreaTentativa = \AreaTentativa[var_P_servicio][var_q_n]\\
+	A_t &= var_A_tentativa\nonumber
 \end{align}
 
 Buscamos dos lados de zapata aproximadamente:
@@ -594,9 +609,9 @@ Buscamos dos lados de zapata aproximadamente:
 
 Reemplazando valores:
 \begin{align*}
-	L &= \LongitudZapL[7.77][0.80][0.40] = 3.10\\
-	B &= \LongitudZapB[7.77][0.80][0.40] = 2.70\\
-	A &= \Area[3.10][2.70] = 
+	L &= \LongitudZapL[var_A_tentativa][var_bcol][var_hcol] = var_Long_zap_L\\
+	B &= \LongitudZapB[var_A_tentativa][var_bcol][var_hcol] = var_Long_zap_B\\
+	A &= \Area[var_Long_zap_L][var_Long_zap_B] = var_Area_total
 \end{align*}
 
 \subsubsection{Verificación de zapatas con cargas y momentos biaxiales}
@@ -604,10 +619,10 @@ Reemplazando valores:
 Si la carga aplicada viene acompañada con momentos que simultáneamente actúan en dos direcciones, asumiendo que la zapata es rígida y que la distribución de presiones sigue siendo lineal se puede obtener las presiones en las cuatro esquinas de una zapata rectangular con la siguiente expresión:
 \begin{align}
 	&\EcPresiones \\ \nonumber
-	&\sigma_1 =\\ \nonumber
-	&\sigma_2 =\\ \nonumber
-	&\sigma_3 =\\ \nonumber
-	&\sigma_4 =\\ \nonumber
+	&\sigma_1 = var_sigma1 \\ \nonumber
+	&\sigma_2 = var_sigma2 \\ \nonumber
+	&\sigma_3 = var_sigma3 \\ \nonumber
+	&\sigma_4 = var_sigma4 \\ \nonumber
 \end{align}
 
 Esta expresión será válida mientras no se tenga ninguna esquina con presión negativa,
@@ -628,17 +643,17 @@ Esto significa que deberíamos repetir todos los cálculos anteriores, amplifica
 
 Sin embargo, este proceso puede ser simplificado, si amplificamos directamente la presión obtenida con cargas de servicio usando un coeficiente intermedio aproximado.
 
-% \begin{theo}[RNE - Norma E.060]
-%     LLa resistencia requerida para cargas muertas (CM) y cargas vivas (CV) será como mínimo:
-%     \begin{align}
-%         U = 1.4CM + 1.7CV
-%     \end{align}
-%     Si en el diseño se tuvieran que considerar cargas de sismo (CS), además de lo indicado en (5), la resistencia requerida será como mínimo:
-%     \begin{align}
-%         U &= 1.25(CM + CV) \pm CS\\
-%         U &= 0.90CM \pm CS
-%     \end{align}
-% \end{theo}
+ \begin{theo}[RNE - Norma E.060]
+     La resistencia requerida para cargas muertas (CM) y cargas vivas (CV) será como mínimo:
+     \begin{align}
+         U = 1.4CM + 1.7CV
+     \end{align}
+     Si en el diseño se tuvieran que considerar cargas de sismo (CS), además de lo indicado en (5), la resistencia requerida será como mínimo:
+     \begin{align}
+         U &= 1.25(CM + CV) \pm CS\\
+         U &= 0.90CM \pm CS
+     \end{align}
+ \end{theo}
 
 
 \begin{table}[h!]
@@ -667,29 +682,26 @@ Por tanto se efectuará el diseño con $\sigma_u = 47.34$
 	A_o &= \AreaTributariaP
 \end{align}
 \begin{align*}
-	b_o &= \SeccCriticaP[0.80][0.40][0.50] \\
-	A_o &= \AreaTributariaP[0.80][0.40][0.50]
+	b_o &= \SeccCriticaP[var_bcol][var_hcol][var_ldes] = var_secc_criticaP\\
+	A_o &= \AreaTributariaP[var_bcol][var_hcol][var_ldes] = var_area_tributaP
 \end{align*}
 
 Cortante de diseño por punzonamiento:
 \begin{align}
-	V_u &= \VuPunzonamiento \\
-	V_u &= \VuPunzonamiento[47.29][8.37][1.17]
-\end{align}
-\begin{align}
-	V_u &= \VuPunzonamiento \\
-	V_u &= \VuPunzonamiento[47.29][8.37][1.17]
+	V_u &= \VuPunzonamiento \\ \nonumber
+	V_u &= \VuPunzonamiento[var_sigmaUltima][var_Area_total][var_area_tributaP]\\
+    V_u &= var_vu_punz
 \end{align}
 
 Debe cumplirse que Vu $\leq$ $\phi$ Vc
 
 Cortante resistente de concreto al punzonamiento:
 
-% \begin{theo}[Verificación del corte por punzonamiento]
-%     LLa resistencia del concreto al corte por punzonamiento es igual a la menor
-% determinada a través de las siguientes expresiones indicadas en la tabla 22.6.5.2
-% del ACI 318-14:
-% \end{theo}
+ \begin{theo}[Verificación del corte por punzonamiento]
+     La resistencia del concreto al corte por punzonamiento es igual a la menor
+ determinada a través de las siguientes expresiones indicadas en la tabla 22.6.5.2
+ del ACI 318-14:
+ \end{theo}
 \begin{align}
 	\phi V_{c1} &= \VcPunzonamientoi \\
 	\phi V_{c2} &= \VcPunzonamientoii \\
@@ -712,12 +724,12 @@ Cortante resistente de concreto al punzonamiento:
 \end{table}
 Reemplazando valores:
 \begin{align*}
-	\phi V_{c1} &= \VcPunzonamientoi[][][][] \\
-	\phi V_{c2} &= \VcPunzonamientoii[][][][][]\\
-	\phi V_{c3} &= \VcPunzonamientoiii[][][]
+	\phi V_{c1} &= \VcPunzonamientoi[var_fc][var_secc_criticaP][var_ldes][0.1] = var_vc_ultimP1 \\
+	\phi V_{c2} &= \VcPunzonamientoii[var_fc][var_secc_criticaP][var_ldes][][] = var_vc_ultimP2\\
+	\phi V_{c3} &= \VcPunzonamientoiii[var_fc][var_secc_criticaP][var_ldes] = var_vc_ultimP3
 \end{align*}
 
-Como $Vu \leq  \phi V_c  $, cumple el valor de d=50 cm.Si no cumple aumentamos el peralte efectivo a
+Como $Vu \leq  \phi V_c  $, cumple el valor de d= $var_ldes$ cm. Si en caso no cumpliera, aumentamos el peralte efectivo a
 d + 10cm y volveremos a calcular.
 
 \subsubsection{Verificación de corte por flexión}
@@ -732,42 +744,43 @@ d + 10cm y volveremos a calcular.
 Cortante de diseño
 \begin{align}
 	V_u &= \VuFlexion \\
-	V_u &= \VuFlexion[47.29][2.70][1.15][0.60] \nonumber \\
-	V_u &=  70.2\nonumber
+	V_u &= \VuFlexion[var_sigmaUltima][var_Long_zap_B][var_c_flexion][var_d_flexion] \nonumber \\
+	V_u &=  var_vu_flexion \nonumber
 \end{align}
 
 Cortante resistente
 \begin{align}
 	\phi V_{c} &= \VcFlexion \\
-	\phi V_{c} &= \VcFlexion[f'_c][B][d] \nonumber
+	\phi V_{c} &= \VcFlexion[var_fc][var_Long_zap_B][var_d_flexion] \nonumber
+    \phi V_{c} &= var_vc_flexion \nonumber
 \end{align}
 
 Debe cumplirse que Vu $\leq$ $\phi$ Vc
 
-El peralte efectivo de 60 cm. es adecuado
+El peralte efectivo de $var_d_flexion$ cm. es adecuado
 
 
 \subsubsection{Cálculo de acero por flexión}
 \begin{align}
 	M_u &= \MomUltimoi \\
-	M_u &= \MomUltimoi[47.30][1.15][2.70] \nonumber \\
-	M_u &= \nonumber
+	M_u &= \MomUltimoi[var_sigmaUltima][var_c_flexion][var_Long_zap_B] \nonumber \\
+	M_u &= var_mom_ultimo \nonumber
 \end{align}
 
 Datos:
 \[
 \begin{array}{cc}
-    M_u =   &   84.44   \,  kg\cdot m   \\
-    \phi =  &   0.90                \\
-    b =     &   270     \,  cm      \\
-    d =     &   60      \,  cm      \\
-    f'c =   &   210     \,  kg/cm^2
+    M_u =   &   var_mom_ultimo    \\
+    \phi =  &   0.90              \\
+    b =     &   var_Long_zap_B    \\
+    d =     &   var_ldes          \\
+    f'c =   &   var_fc
 \end{array}
 \]
 
 \begin{align}
 	&\MomUltimoii \\
-	&\MomUltimoii[84.44][0.90][270][60][210] \nonumber
+	&\MomUltimoii[var_mom_ultimo][0.90][var_Long_zap_B][var_ldes][var_fc] \nonumber
 \end{align}
 
 De la ecuación y los datos despejamos el valor de w.
@@ -779,23 +792,23 @@ De la ecuación y los datos despejamos el valor de w.
 Se toma el valor menor de w y se calcula el acero
 \begin{align}
 	A_s &= \AreaAcero \\
-	A_s &= \AreaAcero[0.001][270][60][210][4200] \\ \nonumber
-	A_s &= \nonumber
+	A_s &= \AreaAcero[0.001][var_Long_zap_B][var_ldes][var_fc][var_fy] \\ \nonumber
+	A_s &= var_area_acero \nonumber
 \end{align}
 
 Acero mínimo
 \begin{flalign}
 	A_{s,min} &= \AreaAceroMin \\
-	A_{s,min} &= \AreaAceroMin[270][50] \\\nonumber
-	A_{s,min} &= \nonumber
+	A_{s,min} &= \AreaAceroMin[var_Long_zap_B][var_hz] \\\nonumber
+	A_{s,min} &= var_area_min_acero \nonumber
 \end{flalign}
 
-% \begin{theo}[De 9.7.3 y 10.5.4 del RNE - Norma E.060, (Acero mínimo)]
-%     NNos dice que, para zapatas de espesor uniforme el área mínima de acero para barras corrugadas  o malla de alambre (liso o corrugado) debe ser 0.0018 del área de la sección total de concreto.
-% \end{theo}
+\begin{theo}[De 9.7.3 y 10.5.4 del RNE - Norma E.060, (Acero mínimo)]
+    Nos dice que, para zapatas de espesor uniforme el área mínima de acero para barras corrugadas  o malla de alambre (liso o corrugado) debe ser 0.0018 del área de la sección total de concreto.
+\end{theo}
 
-\clearpage
-\bibliography{biblio}
+%\clearpage
+%\bibliography{biblio}
 '''
 )
 
